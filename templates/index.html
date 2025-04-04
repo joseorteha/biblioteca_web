@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biblioteca Personal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-top: 30px;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+
+      form {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Registrar Nuevo Libro</h2>
+    <form action="/registrar" method="POST">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo" required>
+
+      <label for="autor">Autor:</label>
+      <input type="text" id="autor" name="autor" required>
+
+      <label for="anio">Año:</label>
+      <input type="number" id="anio" name="anio" required>
+
+      <label for="genero">Género:</label>
+      <select id="genero" name="genero" required>
+        <option value="" disabled selected>Selecciona un género</option>
+        <option value="Novela">Novela</option>
+        <option value="Ficción">Ficción</option>
+        <option value="Fantasía">Fantasía</option>
+        <option value="Ciencia Ficción">Ciencia Ficción</option>
+        <option value="Biografía">Biografía</option>
+        <option value="Historia">Historia</option>
+        <option value="Educativo">Educativo</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+</body>
+</html>
