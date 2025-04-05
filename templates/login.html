@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Biblioteca Personal</title>
+  <title>Login - Biblioteca Personal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -31,7 +31,7 @@
     }
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 400px;
       padding: 20px;
       z-index: 1;
     }
@@ -55,7 +55,7 @@
       position: relative;
       margin-bottom: 2rem;
     }
-    input, select {
+    input {
       width: 100%;
       padding: 1rem;
       border: none;
@@ -64,7 +64,7 @@
       font-size: 1rem;
       transition: all 0.3s ease;
     }
-    input:focus, select:focus {
+    input:focus {
       outline: none;
       border-bottom-color: var(--primary-color);
     }
@@ -135,40 +135,10 @@
         box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
       }
     }
-    .success-message {
-      position: fixed;
-      bottom: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #00b894;
-      color: white;
-      padding: 1rem 2rem;
-      border-radius: 30px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-    .success-message.show {
-      bottom: 20px;
-    }
-    .background-effects {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      overflow: hidden;
-      z-index: 0;
-    }
-    .effect-circle {
-      position: absolute;
-      background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-      opacity: 0.1;
-      border-radius: 50%;
-      animation: float 20s infinite linear;
-    }
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(-100vh) rotate(360deg); }
+    .error-message {
+      color: red;
+      margin-top: 1rem;
+      text-align: center;
     }
     footer {
       padding: 1.5rem;
@@ -206,7 +176,7 @@
       .title {
         font-size: 2rem;
       }
-      input, select {
+      input {
         font-size: 0.9rem;
         padding: 0.8rem;
       }
@@ -241,45 +211,32 @@
 </head>
 <body>
   <div class="container">
-    <h2 class="title animate__animated animate__fadeInDown">Registrar Nuevo Libro 📚</h2>
-    <form id="bookForm" class="form-popup" action="/registrar" method="POST">
+    <h2 class="title animate__animated animate__fadeInDown">Iniciar Sesión</h2>
+    <form id="loginForm" class="form-popup" action="{{ url_for('login') }}" method="POST">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="error-message">
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
       <div class="form-group">
-        <input type="text" id="titulo" name="titulo" required>
-        <label for="titulo">Título</label>
+        <input type="text" id="username" name="username" required>
+        <label for="username">Usuario</label>
         <div class="underline"></div>
       </div>
       <div class="form-group">
-        <input type="text" id="autor" name="autor" required>
-        <label for="autor">Autor</label>
+        <input type="password" id="password" name="password" required>
+        <label for="password">Contraseña</label>
         <div class="underline"></div>
-      </div>
-      <div class="form-group">
-        <input type="number" id="anio" name="anio" required>
-        <label for="anio">Año</label>
-        <div class="underline"></div>
-      </div>
-      <div class="form-group">
-        <select id="genero" name="genero" required>
-          <option value="" disabled selected>Selecciona un género</option>
-          <option value="Novela">Novela</option>
-          <option value="Ficción">Ficción</option>
-          <option value="Fantasía">Fantasía</option>
-          <option value="Ciencia Ficción">Ciencia Ficción</option>
-          <option value="Biografía">Biografía</option>
-          <option value="Historia">Historia</option>
-          <option value="Educativo">Educativo</option>
-          <option value="Otro">Otro</option>
-        </select>
-        <div class="select-arrow"></div>
       </div>
       <button type="submit" class="neon-button">
-        <span class="neon-text">Registrar Libro</span>
+        <span class="neon-text">Iniciar Sesión</span>
         <div class="neon-border"></div>
       </button>
     </form>
-    <div id="successMessage" class="success-message">
-      ¡Libro registrado con éxito! 🎉
-    </div>
   </div>
   <footer>
     <p>Desarrollado con ❤️ por 
@@ -291,8 +248,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const form = document.getElementById('bookForm');
-      const successMessage = document.getElementById('successMessage');
+      const form = document.getElementById('loginForm');
       // Animación suave de entrada
       gsap.from('.form-popup', {
         duration: 0.8,
@@ -317,26 +273,8 @@
           ease: "power2.out"
         });
       });
-      // Manejo del formulario
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Animación de éxito
-        gsap.to(successMessage, {
-          duration: 0.5,
-          bottom: '20px',
-          ease: "power2.out"
-        });
-        setTimeout(() => {
-          gsap.to(successMessage, {
-            duration: 0.5,
-            bottom: '-100px',
-            ease: "power2.in"
-          });
-        }, 3000);
-        form.reset();
-      });
       // Efectos de enfoque
-      document.querySelectorAll('input, select').forEach(element => {
+      document.querySelectorAll('input').forEach(element => {
         element.addEventListener('focus', () => {
           gsap.to(element.parentNode, {
             duration: 0.2,
